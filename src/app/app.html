@@ -1,0 +1,48 @@
+<div class="app-layout">
+  <!-- 1. Header -->
+  <app-header></app-header>
+
+  <!-- 2. Menu de Navigation -->
+  <app-navbar></app-navbar>
+
+  <!-- Contenu Principal -->
+  <main class="page-content">
+    <div class="content-grid">
+      <!-- Zone Principale : Profil Utilisateur -->
+      <section class="main-column">
+        <!-- 3. Profil Utilisateur -->
+        <app-user-profile></app-user-profile>
+
+        <!-- Section informative Prosit (Démonstration de modularité) -->
+        <div class="prosit-banner">
+          <div class="prosit-tag">🎓 ESPRIT - Prosit 1 : Découverte des composants</div>
+          <h3>Architecture basée sur les composants Angular</h3>
+          <p>
+            Chaque bloc de cette page est un <strong>composant Angular autonome (Standalone Component)</strong>
+            possédant son propre fichier TypeScript (logique), HTML (vue) et CSS (styles encapsulés).
+          </p>
+          <div class="tags-row">
+            <span class="tag">#Header</span>
+            <span class="tag">#Navbar</span>
+            <span class="tag">#UserProfile</span>
+            <span class="tag">#FriendsList</span>
+            <span class="tag">#Notifications</span>
+            <span class="tag">#Footer</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Colonne Latérale : Amis & Notifications -->
+      <aside class="sidebar-column">
+        <!-- 4. Zone de notifications -->
+        <app-notifications></app-notifications>
+
+        <!-- 5. Liste des amis -->
+        <app-friends-list></app-friends-list>
+      </aside>
+    </div>
+  </main>
+
+  <!-- 6. Footer -->
+  <app-footer></app-footer>
+</div>

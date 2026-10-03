@@ -1,0 +1,28 @@
+<div class="card notifications-card">
+  <div class="card-header">
+    <div class="title-with-badge">
+      <h3 class="card-title">🔔 Notifications</h3>
+      <span class="unread-pill">2 nouvelles</span>
+    </div>
+    <button class="btn-text" (click)="markAllAsRead()">Tout marquer comme lu</button>
+  </div>
+
+  <div class="notifications-list">
+    @for (notif of notifications; track notif.id) {
+      <div class="notification-item" [class.unread]="notif.unread">
+        <div class="notif-icon">{{ notif.icon }}</div>
+        <div class="notif-content">
+          <div class="notif-header">
+            <h4 class="notif-title">{{ notif.title }}</h4>
+            <span class="notif-time">{{ notif.time }}</span>
+          </div>
+          <p class="notif-desc">{{ notif.description }}</p>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="card-footer">
+    <a href="javascript:void(0)" class="view-all-link">Gérer les alertes &rarr;</a>
+  </div>
+</div>

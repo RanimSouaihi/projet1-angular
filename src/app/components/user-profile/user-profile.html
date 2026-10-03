@@ -1,0 +1,37 @@
+<div class="profile-card">
+  <div class="profile-banner"></div>
+  <div class="profile-body">
+    <div class="avatar-container">
+      <div class="avatar-fallback">AT</div>
+    </div>
+
+    <div class="profile-header-info">
+      <div>
+        <h2 class="profile-name">{{ user.name }}</h2>
+        <p class="profile-title">{{ user.title }}</p>
+        <p class="profile-org">📍 {{ user.organization }} &bull; ✉️ {{ user.email }}</p>
+      </div>
+      <div class="profile-actions">
+        <button class="btn btn-outline" type="button">✏️ Éditer le profil</button>
+        <button class="btn btn-primary" type="button">📢 Proposer un Talk</button>
+      </div>
+    </div>
+
+    <p class="profile-bio">{{ user.bio }}</p>
+
+    <div class="profile-stats">
+      <div class="stat-box">
+        <span class="stat-number">{{ user.conferencesCount }}</span>
+        <span class="stat-label">Conférences données</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">{{ user.followersCount }}</span>
+        <span class="stat-label">Abonnés</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number">{{ user.friendsCount }}</span>
+        <span class="stat-label">Connexions / Amis</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="card friends-card">
+  <div class="card-header">
+    <h3 class="card-title">👥 Liste des Amis & Réseau</h3>
+    <span class="badge">{{ friends.length }} contacts</span>
+  </div>
+
+  <div class="friends-list">
+    @for (friend of friends; track friend.id) {
+      <div class="friend-item">
+        <div class="avatar-wrap">
+          <div class="friend-avatar" [style.background-color]="friend.avatarColor">
+            {{ friend.name.charAt(0) }}
+          </div>
+          @if (friend.isOnline) {
+            <span class="online-dot" title="En ligne"></span>
+          }
+        </div>
+
+        <div class="friend-info">
+          <h4 class="friend-name">{{ friend.name }}</h4>
+          <p class="friend-role">{{ friend.role }}</p>
+        </div>
+
+        <button class="btn-chat" title="Envoyer un message">💬</button>
+      </div>
+    }
+  </div>
+
+  <div class="card-footer">
+    <a href="javascript:void(0)" class="view-all-link">Voir tous les contacts &rarr;</a>
+  </div>
+</div>
