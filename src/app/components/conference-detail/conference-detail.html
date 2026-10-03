@@ -1,0 +1,105 @@
+<div class="conference-card">
+  <!-- En-tête de la carte avec statut dynamique -->
+  <div class="card-top-bar">
+    <span class="badge" [class]="statutBadge().classe">
+      {{ statutBadge().texte }}
+    </span>
+    <span class="category-tag">🎓 Événement ESPRIT Tech</span>
+  </div>
+
+  <!-- 1. Interpolation {{ titre() }} -->
+  <div class="conference-header">
+    <h2 class="conference-title">{{ titre() }}</h2>
+    <p class="conference-speaker">
+      🎤 Intervenant invité : <strong>{{ intervenant() }}</strong>
+    </p>
+  </div>
+
+  <!-- Métadonnées avec interpolation -->
+  <div class="meta-grid">
+    <div class="meta-item">
+      <span class="meta-icon">📅</span>
+      <div>
+        <span class="meta-label">Date & Heure</span>
+        <span class="meta-value">{{ date() }}</span>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="meta-icon">📍</span>
+      <div>
+        <span class="meta-label">Lieu</span>
+        <span class="meta-value">{{ lieu() }}</span>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="meta-icon">🎟️</span>
+      <div>
+        <span class="meta-label">Places disponibles</span>
+        <span class="meta-value highlight-number">{{ placesDisponibles() }}</span>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="meta-icon">👥</span>
+      <div>
+        <span class="meta-label">Participants inscrits</span>
+        <span class="meta-value">{{ nombreInscrits() }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message de confirmation réactif avec contrôle de flux natif @if -->
+  @if (messageConfirmation()) {
+    <div class="alert-box" [class.alert-danger]="estComplet()">
+      ℹ️ {{ messageConfirmation() }}
+    </div>
+  }
+
+  <!-- Zone d'action avec Event Binding (click) et Property Binding [disabled] -->
+  <div class="actions-section">
+    <!-- Contrôle de flux natif @if / @else pour le bouton -->
+    @if (estComplet()) {
+      <div class="sold-out-banner">
+        ⚠️ Aucune place restante. Inscriptions closes !
+      </div>
+    } @else {
+      <button 
+        type="button" 
+        class="btn btn-register" 
+        (click)="inscrire()" 
+        [disabled]="estComplet()">
+        ✍️ S'inscrire à cette conférence ({{ placesDisponibles() }} restantes)
+      </button>
+    }
+
+    <!-- Bouton de désistement pour tester la réactivité inverse -->
+    @if (nombreInscrits() > 0) {
+      <button type="button" class="btn btn-secondary" (click)="annulerInscription()">
+        Annuler une inscription
+      </button>
+    }
+  </div>
+
+  <!-- Section Interactive Prosit 2 : Démonstration du Two-Way Binding -->
+  <div class="demo-binding-box">
+    <h4>🔄 Démonstration du Data-Binding en temps réel (Prosit 2) :</h4>
+    <p class="demo-desc">
+      Modifiez le titre ci-dessous : le <strong>Signal</strong> se met à jour immédiatement et répercute le changement dans toute la page sans aucun rechargement !
+    </p>
+    <div class="input-group">
+      <label for="confTitle">Titre de la conférence :</label>
+      <input 
+        id="confTitle" 
+        type="text" 
+        [value]="titre()" 
+        (input)="modifierTitre($event)" 
+        placeholder="Tapez un nouveau titre..." 
+        class="title-input" />
+    </div>
+    <div class="signal-live-preview">
+      Valeur du Signal en temps réel : <code>{{ titre() }}</code>
+    </div>
+  </div>
+</div>

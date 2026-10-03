@@ -1,48 +1,87 @@
 <div class="app-layout">
-  <!-- 1. Header -->
+  <!-- Header Commun -->
   <app-header></app-header>
 
-  <!-- 2. Menu de Navigation -->
+  <!-- Navbar Commune -->
   <app-navbar></app-navbar>
 
-  <!-- Contenu Principal -->
-  <main class="page-content">
-    <div class="content-grid">
-      <!-- Zone Principale : Profil Utilisateur -->
-      <section class="main-column">
-        <!-- 3. Profil Utilisateur -->
-        <app-user-profile></app-user-profile>
-
-        <!-- Section informative Prosit (Démonstration de modularité) -->
-        <div class="prosit-banner">
-          <div class="prosit-tag">🎓 ESPRIT - Prosit 1 : Découverte des composants</div>
-          <h3>Architecture basée sur les composants Angular</h3>
-          <p>
-            Chaque bloc de cette page est un <strong>composant Angular autonome (Standalone Component)</strong>
-            possédant son propre fichier TypeScript (logique), HTML (vue) et CSS (styles encapsulés).
-          </p>
-          <div class="tags-row">
-            <span class="tag">#Header</span>
-            <span class="tag">#Navbar</span>
-            <span class="tag">#UserProfile</span>
-            <span class="tag">#FriendsList</span>
-            <span class="tag">#Notifications</span>
-            <span class="tag">#Footer</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Colonne Latérale : Amis & Notifications -->
-      <aside class="sidebar-column">
-        <!-- 4. Zone de notifications -->
-        <app-notifications></app-notifications>
-
-        <!-- 5. Liste des amis -->
-        <app-friends-list></app-friends-list>
-      </aside>
+  <!-- Barre de sélection des Prosits (ESPRIT) -->
+  <div class="prosit-switcher-bar">
+    <div class="switcher-container">
+      <span class="switcher-label">Modules d'apprentissage ESPRIT :</span>
+      <div class="switcher-buttons">
+        <button 
+          type="button" 
+          class="switch-btn" 
+          [class.active]="activeProsit() === 'prosit2'"
+          (click)="setProsit('prosit2')">
+          ⚡ Prosit 2 : Data-Binding & Signals
+        </button>
+        <button 
+          type="button" 
+          class="switch-btn" 
+          [class.active]="activeProsit() === 'prosit1'"
+          (click)="setProsit('prosit1')">
+          🧱 Prosit 1 : Architecture des Composants
+        </button>
+      </div>
     </div>
+  </div>
+
+  <!-- Contenu Principal Dynamique selon le Prosit actif -->
+  <main class="page-content">
+    
+    <!-- VUE PROSIT 2 : Data-Binding et Signals -->
+    @if (activeProsit() === 'prosit2') {
+      <div class="prosit-view">
+        <div class="prosit-header-card">
+          <div class="prosit-tag">🎓 ESPRIT - Prosit 2 : Découvrir le data-binding et les Signals</div>
+          <h2>Page Détail d'une Conférence (Interactive & Réactive)</h2>
+          <p>
+            Cette vue illustre la communication fluide entre TypeScript et HTML grâce à l'<strong>interpolation</strong>,
+            le <strong>property binding</strong>, l'<strong>event binding</strong>, le <strong>contrôle de flux natif</strong> et les <strong>Signals Angular 21</strong>.
+          </p>
+        </div>
+
+        <!-- Composant Prosit 2 -->
+        <app-conference-detail></app-conference-detail>
+      </div>
+    }
+
+    <!-- VUE PROSIT 1 : Découverte des Composants -->
+    @if (activeProsit() === 'prosit1') {
+      <div class="content-grid">
+        <!-- Zone Principale : Profil Utilisateur -->
+        <section class="main-column">
+          <app-user-profile></app-user-profile>
+
+          <div class="prosit-banner">
+            <div class="prosit-tag">🎓 ESPRIT - Prosit 1 : Découverte des composants</div>
+            <h3>Architecture basée sur les composants Angular</h3>
+            <p>
+              Chaque bloc de cette page est un composant Angular autonome avec son propre fichier TypeScript, HTML et CSS.
+            </p>
+            <div class="tags-row">
+              <span class="tag">#Header</span>
+              <span class="tag">#Navbar</span>
+              <span class="tag">#UserProfile</span>
+              <span class="tag">#FriendsList</span>
+              <span class="tag">#Notifications</span>
+              <span class="tag">#Footer</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Colonne Latérale : Amis & Notifications -->
+        <aside class="sidebar-column">
+          <app-notifications></app-notifications>
+          <app-friends-list></app-friends-list>
+        </aside>
+      </div>
+    }
+
   </main>
 
-  <!-- 6. Footer -->
+  <!-- Footer Commun -->
   <app-footer></app-footer>
 </div>
