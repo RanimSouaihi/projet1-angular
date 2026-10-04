@@ -309,3 +309,54 @@
 .btn-reload:hover {
   background: #1d4ed8;
 }
+
+
+/* Styles Prosit 4 - Sélection et bouton de communication */
+.conference-card.card-selected {
+  border: 2px solid #7c3aed;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.25);
+  background: #faf5ff;
+}
+
+.card-header {
+  cursor: pointer;
+}
+
+.conf-speaker {
+  display: block;
+  font-size: 0.85rem;
+  color: #7c3aed;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.card-actions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.btn-select-detail {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid #c4b5fd;
+  background: #f5f3ff;
+  color: #6d28d9;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-select-detail:hover {
+  background: #ede9fe;
+  border-color: #8b5cf6;
+}
+
+.btn-select-detail.btn-active-select {
+  background: #7c3aed;
+  color: #ffffff;
+  border-color: #6d28d9;
+}

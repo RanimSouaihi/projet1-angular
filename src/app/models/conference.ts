@@ -6,4 +6,5 @@ export interface Conference {
   place: string;
   maxParticipants: number;
   nbParticipants: number;
+  speaker?: string;
 }

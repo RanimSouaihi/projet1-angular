@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, input, output } from '@angular/core';
 import { UpperCasePipe, DatePipe, NgClass } from '@angular/common';
 import { Conference } from '../../models/conference';
 
@@ -9,16 +9,26 @@ import { Conference } from '../../models/conference';
   styleUrl: './conference-list.css',
 })
 export class ConferenceList {
+  // =========================================================================
+  // PROSIT 4 : Communication entre composants
+  // =========================================================================
+  // 1. Sortie (Output) : Émet la conférence sélectionnée vers le parent ou un autre composant
+  conferenceSelectionnee = output<Conference>();
+
+  // 2. Entrée (Input) : ID de la conférence actuellement sélectionnée pour le style actif
+  selectedConferenceId = input<number | null>(null);
+
   // Date de référence actuelle
   currentDate = new Date();
 
-  // Liste initiale des conférences (avec des conférences futures et passées pour tester le filtrage)
+  // Liste initiale des conférences avec conférenciers
   private initialConferences: Conference[] = [
     {
       id: 1,
       title: 'Intelligence Artificielle Générative & LLMs',
+      speaker: 'Dr. Karim Bouzid (AI Researcher)',
       description: 'Découvrez les dernières avancées dans les modèles multimodaux et agents intelligents.',
-      date: new Date(2026, 10, 15, 10, 0), // Novembre 2026 (Futur)
+      date: new Date(2026, 10, 15, 10, 0),
       place: 'Amphithéâtre IBN KHALDOUN - ESPRIT',
       maxParticipants: 100,
       nbParticipants: 75, // Reste 25 places -> Bouton VERT
@@ -26,8 +36,9 @@ export class ConferenceList {
     {
       id: 2,
       title: 'Architecture Micro-Frontends avec Angular 21',
+      speaker: 'Ing. Sarra Ben Amor (Lead Front-End)',
       description: 'Concevoir des applications modulaires à grande échelle avec les signaux et standalone components.',
-      date: new Date(2026, 10, 22, 14, 30), // Novembre 2026 (Futur)
+      date: new Date(2026, 10, 22, 14, 30),
       place: 'Salle Polyvalente - Bloc B',
       maxParticipants: 50,
       nbParticipants: 45, // Reste 5 places (< 10) -> Bouton ORANGÉ
@@ -35,8 +46,9 @@ export class ConferenceList {
     {
       id: 3,
       title: 'DevOps & Sécurité dans le Cloud AWS/Azure',
+      speaker: 'Dr. Mehdi Trabelsi (Cloud Architect)',
       description: 'Atelier pratique sur les pipelines CI/CD sécurisés et le déploiement continu.',
-      date: new Date(2026, 11, 5, 9, 30), // Décembre 2026 (Futur)
+      date: new Date(2026, 11, 5, 9, 30),
       place: 'Lab Cloud Computing - Bloc C',
       maxParticipants: 30,
       nbParticipants: 30, // Reste 0 place -> Bouton ROUGE (Complet)
@@ -44,6 +56,7 @@ export class ConferenceList {
     {
       id: 4,
       title: 'Introduction au Framework Symfony 7',
+      speaker: 'Ing. Mohamed Ali (Expert Web)',
       description: 'Session d’initiation aux concepts MVC et services Symfony.',
       date: new Date(2025, 2, 10, 11, 0), // Passée -> Ne doit pas s'afficher
       place: 'Salle 204 - ESPRIT Ghazela',
@@ -53,8 +66,9 @@ export class ConferenceList {
     {
       id: 5,
       title: 'Cybersécurité : Défense et Analyse Forensique',
+      speaker: 'Dr. Yassine Karray (Cybersecurity Consultant)',
       description: 'Méthodologies d’investigation numérique et protection contre les cyberattaques modernes.',
-      date: new Date(2026, 11, 18, 15, 0), // Décembre 2026 (Futur)
+      date: new Date(2026, 11, 18, 15, 0),
       place: 'Auditorium Central - ESPRIT',
       maxParticipants: 80,
       nbParticipants: 62, // Reste 18 places -> Bouton VERT
@@ -67,7 +81,7 @@ export class ConferenceList {
   // Option pour masquer ou afficher les conférences passées
   masquerAnciennes = signal<boolean>(true);
 
-  // Computed Signal : filtre automatiquement pour ne garder que les conférences futures (date >= aujourd'hui)
+  // Computed Signal : filtre les conférences futures
   conferencesFiltrees = computed(() => {
     const list = this.conferences();
     if (!this.masquerAnciennes()) {
@@ -83,10 +97,7 @@ export class ConferenceList {
     return conf.maxParticipants - conf.nbParticipants;
   }
 
-  // Règle de style dynamique exigée par le Prosit 3 :
-  // - >= 10 places restantes : Vert
-  // - < 10 places restantes : Orangé
-  // - 0 place restante : Rouge
+  // Règle de style dynamique exigée par le Prosit 3
   getButtonClass(conf: Conference): string {
     const restantes = this.getPlacesRestantes(conf);
     if (restantes <= 0) {
@@ -98,7 +109,12 @@ export class ConferenceList {
     }
   }
 
-  // Inscription interactive pour voir le bouton changer de couleur en direct
+  // Prosit 4 : Sélection d'une conférence pour la transmettre au composant Detail
+  selectionner(conf: Conference) {
+    this.conferenceSelectionnee.emit(conf);
+  }
+
+  // Inscription interactive
   inscrire(conf: Conference) {
     if (this.getPlacesRestantes(conf) > 0) {
       this.conferences.update(list =>
@@ -107,17 +123,25 @@ export class ConferenceList {
     }
   }
 
-  // Simuler une liste vide pour tester le message "Aucune conférence enregistrée"
+  // Méthode appelée lorsque ConferenceDetail émet un événement d'inscription (Prosit 4)
+  incrementParticipants(confId: number) {
+    this.conferences.update(list =>
+      list.map(c => c.id === confId && (c.maxParticipants - c.nbParticipants > 0)
+        ? { ...c, nbParticipants: c.nbParticipants + 1 }
+        : c
+      )
+    );
+  }
+
+  // Vider et recharger
   viderListe() {
     this.conferences.set([]);
   }
 
-  // Recharger la liste initiale
   rechargerListe() {
     this.conferences.set([...this.initialConferences]);
   }
 
-  // Basculer l'affichage des anciennes conférences
   toggleAnciennes() {
     this.masquerAnciennes.update(val => !val);
   }

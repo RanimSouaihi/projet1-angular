@@ -2,7 +2,7 @@
   <!-- Barre d'outils et de contrôle pour les tests pédagogiques -->
   <div class="toolbar">
     <div class="toolbar-title">
-      <h3>📅 Liste des Conférences à Venir</h3>
+      <h3>📅 Liste des Conférences Disponibles</h3>
       <span class="count-badge">{{ conferencesFiltrees().length }} conférence(s) disponible(s)</span>
     </div>
 
@@ -37,14 +37,18 @@
     <span class="legend-item"><span class="legend-dot dot-red"></span> 0 place (Complet) : <strong>Rouge</strong></span>
   </div>
 
-  <!-- Parcourt de la liste avec le contrôle de flux natif @for et gestion du cas vide avec @empty -->
+  <!-- Parcourt de la liste avec @for et gestion du cas vide avec @empty -->
   <div class="conferences-grid">
     @for (conf of conferencesFiltrees(); track conf.id) {
-      <div class="conference-card" [class.card-disabled]="getPlacesRestantes(conf) <= 0">
+      <div 
+        class="conference-card" 
+        [class.card-selected]="selectedConferenceId() === conf.id"
+        [class.card-disabled]="getPlacesRestantes(conf) <= 0">
         
-        <div class="card-header">
+        <div class="card-header" (click)="selectionner(conf)" title="Cliquer pour afficher dans le détail">
           <!-- 1. Transformation avec le Pipe UPPERCASE -->
           <h4 class="conf-title">{{ conf.title | uppercase }}</h4>
+          <span class="conf-speaker">🎤 {{ conf.speaker }}</span>
           <span class="conf-place">📍 {{ conf.place }}</span>
         </div>
 
@@ -65,8 +69,18 @@
           </div>
         </div>
 
-        <!-- 3. Bouton avec directive ngClass pour la couleur dynamique et [disabled] -->
-        <div class="card-action">
+        <!-- 3. Actions : Sélection (Prosit 4 Output) et Inscription (Prosit 3) -->
+        <div class="card-actions-group">
+          <!-- Prosit 4 : Bouton pour émettre la sélection vers le composant Detail -->
+          <button 
+            type="button" 
+            class="btn-select-detail" 
+            [class.btn-active-select]="selectedConferenceId() === conf.id"
+            (click)="selectionner(conf)">
+            {{ selectedConferenceId() === conf.id ? '✅ Sélectionnée' : '👁️ Voir Détails (Prosit 4) ➔' }}
+          </button>
+
+          <!-- Prosit 3 : Bouton avec couleur dynamique -->
           <button 
             type="button" 
             class="btn-inscription" 
@@ -74,9 +88,9 @@
             [disabled]="getPlacesRestantes(conf) <= 0"
             (click)="inscrire(conf)">
             @if (getPlacesRestantes(conf) <= 0) {
-              ❌ COMPLET (0 place)
+              ❌ COMPLET
             } @else {
-              ✍️ S'inscrire ({{ getPlacesRestantes(conf) }} restante(s))
+              ✍️ S'inscrire ({{ getPlacesRestantes(conf) }})
             }
           </button>
         </div>

@@ -231,3 +231,74 @@
   color: #0f172a;
   font-weight: 600;
 }
+
+
+/* Styles Prosit 4 - Master-Detail & Communication */
+.empty-selection-box {
+  background: #ffffff;
+  border: 2px dashed #94a3b8;
+  border-radius: 12px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-selection-box .empty-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-selection-box h3 {
+  margin: 0 0 0.5rem 0;
+  color: #1e293b;
+  font-size: 1.25rem;
+}
+
+.empty-selection-box p {
+  margin: 0 auto;
+  max-width: 400px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.badge-input-origin {
+  background: #ede9fe;
+  color: #6d28d9;
+  border: 1px solid #ddd6fe;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.conference-desc-full {
+  color: #475569;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 1.25rem 0;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border-left: 3px solid #3b82f6;
+  border-radius: 0 6px 6px 0;
+}
+
+.communication-info-box {
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.communication-info-box h4 {
+  margin: 0 0 0.4rem 0;
+  color: #5b21b6;
+  font-size: 0.92rem;
+}
+
+.communication-info-box p {
+  margin: 0;
+  color: #6b21a8;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}

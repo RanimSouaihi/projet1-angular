@@ -13,9 +13,16 @@
         <button 
           type="button" 
           class="switch-btn" 
+          [class.active]="activeProsit() === 'prosit4'"
+          (click)="setProsit('prosit4')">
+          ⚡ Prosit 4 : Communication Inter-Composants (&#64;Input / &#64;Output)
+        </button>
+        <button 
+          type="button" 
+          class="switch-btn" 
           [class.active]="activeProsit() === 'prosit3'"
           (click)="setProsit('prosit3')">
-          🚀 Prosit 3 : Directives, Contrôle de Flux & Pipes
+          🚀 Prosit 3 : Directives & Pipes
         </button>
         <button 
           type="button" 
@@ -38,6 +45,42 @@
   <!-- Contenu Principal Dynamique selon le Prosit actif -->
   <main class="page-content">
 
+    <!-- VUE PROSIT 4 : Communication entre deux composants imbriqués / frères -->
+    @if (activeProsit() === 'prosit4') {
+      <div class="prosit-view">
+        <div class="prosit-header-card prosit-4-theme">
+          <div class="prosit-tag">🎓 ESPRIT - Prosit 4 : Communication entre deux composants imbriqués</div>
+          <h2>Master-Detail : Synchronisation en Temps Réel</h2>
+          <p>
+            Démonstration de la communication bidirectionnelle :
+            cliquez sur une conférence dans <strong>ConferenceList</strong> (à gauche) ➔ ses données sont transmises via <strong>&#64;Output / output()</strong> au composant parent, puis injectées dans <strong>ConferenceDetail</strong> (à droite) via <strong>&#64;Input / input()</strong> !
+          </p>
+        </div>
+
+        <!-- Layout Master-Detail à 2 colonnes -->
+        <div class="master-detail-grid">
+          <!-- Composant 1 : ConferenceList émettant conferenceSelectionnee -->
+          <div class="master-column">
+            <div class="column-badge">📋 Composant Émetteur : ConferenceList</div>
+            <app-conference-list 
+              #confListProsit4
+              [selectedConferenceId]="selectedConference()?.id ?? null"
+              (conferenceSelectionnee)="onConferenceSelected($event)">
+            </app-conference-list>
+          </div>
+
+          <!-- Composant 2 : ConferenceDetail recevant conferenceInput et émettant inscriptionEvent -->
+          <div class="detail-column">
+            <div class="column-badge">🔍 Composant Récepteur : ConferenceDetail</div>
+            <app-conference-detail 
+              [conferenceInput]="selectedConference()"
+              (inscriptionEvent)="onInscriptionFromDetail($event, confListProsit4)">
+            </app-conference-detail>
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- VUE PROSIT 3 : Directives, Contrôle de flux natif et Pipes -->
     @if (activeProsit() === 'prosit3') {
       <div class="prosit-view">
@@ -53,7 +96,6 @@
           </p>
         </div>
 
-        <!-- Composant Prosit 3 -->
         <app-conference-list></app-conference-list>
       </div>
     }
@@ -70,7 +112,6 @@
           </p>
         </div>
 
-        <!-- Composant Prosit 2 -->
         <app-conference-detail></app-conference-detail>
       </div>
     }
@@ -78,7 +119,6 @@
     <!-- VUE PROSIT 1 : Découverte des Composants -->
     @if (activeProsit() === 'prosit1') {
       <div class="content-grid">
-        <!-- Zone Principale : Profil Utilisateur -->
         <section class="main-column">
           <app-user-profile></app-user-profile>
 
@@ -99,7 +139,6 @@
           </div>
         </section>
 
-        <!-- Colonne Latérale : Amis & Notifications -->
         <aside class="sidebar-column">
           <app-notifications></app-notifications>
           <app-friends-list></app-friends-list>
