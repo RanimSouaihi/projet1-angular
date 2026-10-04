@@ -1,4 +1,97 @@
-<h1>conferences</h1>
-@for(conf of conferences; track $index){
-    <app-conference-details [conf]="conf></app-conference-details>
-}
+<div class="conferences-container">
+  <!-- Barre d'outils et de contrôle pour les tests pédagogiques -->
+  <div class="toolbar">
+    <div class="toolbar-title">
+      <h3>📅 Liste des Conférences à Venir</h3>
+      <span class="count-badge">{{ conferencesFiltrees().length }} conférence(s) disponible(s)</span>
+    </div>
+
+    <div class="toolbar-actions">
+      <!-- Filtre des anciennes conférences -->
+      <button 
+        type="button" 
+        class="tool-btn" 
+        [class.active]="masquerAnciennes()" 
+        (click)="toggleAnciennes()">
+        {{ masquerAnciennes() ? '🔍 Masquer les anciennes (Actif)' : '👁️ Afficher toutes les conférences' }}
+      </button>
+
+      <!-- Boutons pour tester le cas liste vide -->
+      @if (conferences().length > 0) {
+        <button type="button" class="tool-btn btn-danger-soft" (click)="viderListe()">
+          🗑️ Tester Liste Vide
+        </button>
+      } @else {
+        <button type="button" class="tool-btn btn-success-soft" (click)="rechargerListe()">
+          🔄 Recharger les conférences
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Légende des couleurs demandée par le Prosit 3 -->
+  <div class="legend-bar">
+    <span class="legend-title">Légende des boutons :</span>
+    <span class="legend-item"><span class="legend-dot dot-green"></span> ≥ 10 places : <strong>Vert</strong></span>
+    <span class="legend-item"><span class="legend-dot dot-orange"></span> &lt; 10 places : <strong>Orangé</strong></span>
+    <span class="legend-item"><span class="legend-dot dot-red"></span> 0 place (Complet) : <strong>Rouge</strong></span>
+  </div>
+
+  <!-- Parcourt de la liste avec le contrôle de flux natif @for et gestion du cas vide avec @empty -->
+  <div class="conferences-grid">
+    @for (conf of conferencesFiltrees(); track conf.id) {
+      <div class="conference-card" [class.card-disabled]="getPlacesRestantes(conf) <= 0">
+        
+        <div class="card-header">
+          <!-- 1. Transformation avec le Pipe UPPERCASE -->
+          <h4 class="conf-title">{{ conf.title | uppercase }}</h4>
+          <span class="conf-place">📍 {{ conf.place }}</span>
+        </div>
+
+        <p class="conf-description">{{ conf.description }}</p>
+
+        <div class="conf-meta">
+          <!-- 2. Transformation avec le Pipe DATE -->
+          <div class="meta-row">
+            <span class="meta-label">Date :</span>
+            <span class="meta-value">{{ conf.date | date: 'EEEE d MMMM y à HH:mm' }}</span>
+          </div>
+
+          <div class="meta-row">
+            <span class="meta-label">Places restantes :</span>
+            <span class="meta-value places-badge" [class.places-low]="getPlacesRestantes(conf) < 10 && getPlacesRestantes(conf) > 0" [class.places-zero]="getPlacesRestantes(conf) <= 0">
+              <strong>{{ getPlacesRestantes(conf) }}</strong> / {{ conf.maxParticipants }}
+            </span>
+          </div>
+        </div>
+
+        <!-- 3. Bouton avec directive ngClass pour la couleur dynamique et [disabled] -->
+        <div class="card-action">
+          <button 
+            type="button" 
+            class="btn-inscription" 
+            [ngClass]="getButtonClass(conf)"
+            [disabled]="getPlacesRestantes(conf) <= 0"
+            (click)="inscrire(conf)">
+            @if (getPlacesRestantes(conf) <= 0) {
+              ❌ COMPLET (0 place)
+            } @else {
+              ✍️ S'inscrire ({{ getPlacesRestantes(conf) }} restante(s))
+            }
+          </button>
+        </div>
+
+      </div>
+    } @empty {
+      <!-- 4. Contrôle de flux natif : Message si aucune conférence n'est enregistrée -->
+      <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <h4>Aucune conférence enregistrée</h4>
+        <p>Il n'y a actuellement aucune conférence programmée ou toutes les conférences passées ont été masquées.</p>
+        <button type="button" class="btn-reload" (click)="rechargerListe()">
+          🔄 Recharger la liste des conférences
+        </button>
+      </div>
+    }
+  </div>
+</div>

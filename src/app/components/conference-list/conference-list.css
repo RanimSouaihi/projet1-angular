@@ -1,0 +1,311 @@
+.conferences-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background: #ffffff;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+}
+
+.toolbar-title h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #0f172a;
+}
+
+.count-badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tool-btn {
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  transition: all 0.2s;
+}
+
+.tool-btn:hover {
+  background: #e2e8f0;
+}
+
+.tool-btn.active {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+}
+
+.btn-danger-soft {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.btn-danger-soft:hover {
+  background: #fee2e2;
+}
+
+.btn-success-soft {
+  background: #f0fdf4;
+  color: #16a34a;
+  border-color: #bbf7d0;
+}
+
+.btn-success-soft:hover {
+  background: #dcfce7;
+}
+
+.legend-bar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: #f8fafc;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  border: 1px dashed #cbd5e1;
+  font-size: 0.85rem;
+  color: #475569;
+  flex-wrap: wrap;
+}
+
+.legend-title {
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot-green {
+  background: #16a34a;
+  box-shadow: 0 0 6px #16a34a;
+}
+
+.dot-orange {
+  background: #ea580c;
+  box-shadow: 0 0 6px #ea580c;
+}
+
+.dot-red {
+  background: #dc2626;
+  box-shadow: 0 0 6px #dc2626;
+}
+
+.conferences-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.conference-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.conference-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.08);
+}
+
+.conference-card.card-disabled {
+  background: #fafafa;
+  border-color: #f1f5f9;
+  opacity: 0.85;
+}
+
+.card-header {
+  margin-bottom: 0.75rem;
+}
+
+.conf-title {
+  margin: 0 0 0.35rem 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1.35;
+  letter-spacing: 0.25px;
+}
+
+.conf-place {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.conf-description {
+  margin: 0 0 1rem 0;
+  font-size: 0.88rem;
+  color: #475569;
+  line-height: 1.45;
+  flex: 1;
+}
+
+.conf-meta {
+  background: #f8fafc;
+  padding: 0.85rem;
+  border-radius: 8px;
+  margin-bottom: 1.25rem;
+  border: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+}
+
+.meta-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.meta-value {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.places-badge {
+  color: #16a34a;
+}
+
+.places-badge.places-low {
+  color: #ea580c;
+}
+
+.places-badge.places-zero {
+  color: #dc2626;
+}
+
+.card-action {
+  margin-top: auto;
+}
+
+.btn-inscription {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: none;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Couleurs requises par le Prosit 3 */
+.btn-status-green {
+  background-color: #16a34a;
+}
+
+.btn-status-green:hover:not(:disabled) {
+  background-color: #15803d;
+  box-shadow: 0 4px 8px rgba(22, 163, 74, 0.3);
+}
+
+.btn-status-orange {
+  background-color: #ea580c;
+}
+
+.btn-status-orange:hover:not(:disabled) {
+  background-color: #c2410c;
+  box-shadow: 0 4px 8px rgba(234, 88, 12, 0.3);
+}
+
+.btn-status-red {
+  background-color: #dc2626;
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.btn-inscription:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Cas liste vide (@empty) */
+.empty-state {
+  grid-column: 1 / -1;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px dashed #cbd5e1;
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+.empty-state h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+  color: #1e293b;
+}
+
+.empty-state p {
+  margin: 0 auto 1.5rem auto;
+  max-width: 480px;
+  color: #64748b;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.btn-reload {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.65rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-reload:hover {
+  background: #1d4ed8;
+}

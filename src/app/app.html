@@ -8,8 +8,15 @@
   <!-- Barre de sélection des Prosits (ESPRIT) -->
   <div class="prosit-switcher-bar">
     <div class="switcher-container">
-      <span class="switcher-label">Modules d'apprentissage ESPRIT :</span>
+      <span class="switcher-label">Modules ESPRIT :</span>
       <div class="switcher-buttons">
+        <button 
+          type="button" 
+          class="switch-btn" 
+          [class.active]="activeProsit() === 'prosit3'"
+          (click)="setProsit('prosit3')">
+          🚀 Prosit 3 : Directives, Contrôle de Flux & Pipes
+        </button>
         <button 
           type="button" 
           class="switch-btn" 
@@ -30,6 +37,26 @@
 
   <!-- Contenu Principal Dynamique selon le Prosit actif -->
   <main class="page-content">
+
+    <!-- VUE PROSIT 3 : Directives, Contrôle de flux natif et Pipes -->
+    @if (activeProsit() === 'prosit3') {
+      <div class="prosit-view">
+        <div class="prosit-header-card prosit-3-theme">
+          <div class="prosit-tag">🎓 ESPRIT - Prosit 3 : Directives, contrôle de flux natif et pipes</div>
+          <h2>Liste Dynamique des Conférences</h2>
+          <p>
+            Démonstration complète de : 
+            <strong>Pipes natifs</strong> (<code>uppercase</code>, <code>date</code>), 
+            <strong>Contrôle de flux natif</strong> (<code>&#64;for</code> avec bloc <code>&#64;empty</code>, <code>&#64;if</code>), 
+            <strong>Directives conditionnelles</strong> (<code>ngClass</code> avec boutons vert / orangé / rouge selon les places restantes), 
+            et <strong>filtrage automatique des anciennes conférences</strong>.
+          </p>
+        </div>
+
+        <!-- Composant Prosit 3 -->
+        <app-conference-list></app-conference-list>
+      </div>
+    }
     
     <!-- VUE PROSIT 2 : Data-Binding et Signals -->
     @if (activeProsit() === 'prosit2') {

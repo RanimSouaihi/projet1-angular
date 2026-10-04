@@ -6,6 +6,7 @@ import { FriendsList } from './components/friends-list/friends-list';
 import { Notifications } from './components/notifications/notifications';
 import { Footer } from './components/footer/footer';
 import { ConferenceDetail } from './components/conference-detail/conference-detail';
+import { ConferenceList } from './components/conference-list/conference-list';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { ConferenceDetail } from './components/conference-detail/conference-deta
     FriendsList,
     Notifications,
     Footer,
-    ConferenceDetail
+    ConferenceDetail,
+    ConferenceList
   ],
   templateUrl: './app.html',
   styleUrl: './app.css'
@@ -24,10 +26,10 @@ import { ConferenceDetail } from './components/conference-detail/conference-deta
 export class App {
   title = 'ConfConnect - Plateforme Conférences ESPRIT';
   
-  // Signal réactif pour basculer facilement entre Prosit 1 et Prosit 2
-  activeProsit = signal<'prosit2' | 'prosit1'>('prosit2');
+  // Signal réactif pour basculer facilement entre les 3 Prosits ESPRIT
+  activeProsit = signal<'prosit3' | 'prosit2' | 'prosit1'>('prosit3');
 
-  setProsit(prosit: 'prosit1' | 'prosit2') {
+  setProsit(prosit: 'prosit1' | 'prosit2' | 'prosit3') {
     this.activeProsit.set(prosit);
   }
 }

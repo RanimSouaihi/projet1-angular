@@ -72,6 +72,15 @@
   margin-bottom: 1.75rem;
 }
 
+.prosit-header-card.prosit-3-theme {
+  background: linear-gradient(135deg, #fdf4ff 0%, #f0fdf4 100%);
+  border-color: #f0abfc;
+}
+
+.prosit-header-card.prosit-3-theme h2 {
+  color: #86198f;
+}
+
 .prosit-header-card h2 {
   margin: 0.25rem 0 0.5rem 0;
   font-size: 1.35rem;
