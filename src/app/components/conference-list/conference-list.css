@@ -70,6 +70,21 @@ h1 {
   flex: 1;
 }
 
+.card-header-meta {
+  margin-bottom: 8px;
+}
+
+.category-pill {
+  background-color: #e0e7ff;
+  color: #3730a3;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .card-title {
   font-weight: bold;
   font-size: 1.15rem;

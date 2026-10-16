@@ -9,26 +9,35 @@ export class ConferenceService {
     { 
       id: 1, 
       title: 'Angular Conference', 
-      date: '2026-10-15', 
+      category: 'Web',
+      date: '2026-11-15', 
       place: 'Tunis',
+      maxParticipants: 100,
+      nbParticipants: 45,
       speaker: 'Dr. Karim Bouzid',
-      description: 'Découvrez les dernières avancées dans Angular 21 et les Reactive Forms.'
+      description: 'Découvrez les dernières avancées dans Angular 21, les Reactive Forms et les Signals.'
     },
     { 
       id: 2, 
       title: 'Java Conference', 
-      date: '2026-10-20', 
+      category: 'Backend',
+      date: '2026-11-20', 
       place: 'Sousse',
+      maxParticipants: 80,
+      nbParticipants: 60,
       speaker: 'Ing. Sarra Ben Amor',
-      description: 'Architecture des microservices avec Spring Boot et Cloud.'
+      description: 'Architecture des microservices avec Spring Boot 3 et déploiement Kubernetes.'
     },
     { 
       id: 3, 
       title: 'AI Conference', 
-      date: '2026-10-25', 
+      category: 'Intelligence Artificielle',
+      date: '2026-12-05', 
       place: 'Sfax',
+      maxParticipants: 150,
+      nbParticipants: 90,
       speaker: 'Dr. Mehdi Trabelsi',
-      description: 'Intelligence Artificielle Générative, LLMs et vision par ordinateur.'
+      description: 'Intelligence Artificielle Générative, LLMs et vision par ordinateur de pointe.'
     }
   ];
 
@@ -42,11 +51,15 @@ export class ConferenceService {
     return this.conferences().find(c => c.id === id);
   }
 
-  addConference(conference: Omit<Conference, 'id'>): void {
+  addConference(conference: Omit<Conference, 'id' | 'nbParticipants'> & { nbParticipants?: number }): void {
     const newId = this.conferences().length > 0 
       ? Math.max(...this.conferences().map(c => c.id)) + 1 
       : 1;
-    const newConference: Conference = { id: newId, ...conference };
+    const newConference: Conference = { 
+      id: newId, 
+      nbParticipants: conference.nbParticipants ?? 0,
+      ...conference 
+    };
     this.conferences.update(list => [...list, newConference]);
   }
 

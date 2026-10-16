@@ -9,9 +9,13 @@
       <div class="conference-card">
         <img [src]="conferenceImage" [alt]="conf.title" />
         <div class="card-content">
+          <div class="card-header-meta">
+            <span class="category-pill">{{ conf.category }}</span>
+          </div>
           <p class="card-title">{{ conf.title }}</p>
           <p class="card-meta">📅 {{ conf.date }}</p>
           <p class="card-meta">📍 {{ conf.place }}</p>
+          <p class="card-meta">👥 {{ conf.nbParticipants }} / {{ conf.maxParticipants }} inscrits</p>
           @if (conf.speaker) {
             <p class="card-meta">👤 {{ conf.speaker }}</p>
           }

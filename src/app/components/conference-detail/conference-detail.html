@@ -7,12 +7,20 @@
       </div>
       <div class="card-body">
         <div class="info-row">
+          <span class="emoji">🏷️</span>
+          <span><strong>Catégorie :</strong> {{ conference.category }}</span>
+        </div>
+        <div class="info-row">
           <span class="emoji">📅</span>
           <span><strong>Date :</strong> {{ conference.date }}</span>
         </div>
         <div class="info-row">
           <span class="emoji">📍</span>
           <span><strong>Lieu :</strong> {{ conference.place }}</span>
+        </div>
+        <div class="info-row">
+          <span class="emoji">👥</span>
+          <span><strong>Participants max :</strong> {{ conference.maxParticipants }} (inscrits : {{ conference.nbParticipants }})</span>
         </div>
         @if (conference.speaker) {
           <div class="info-row">
