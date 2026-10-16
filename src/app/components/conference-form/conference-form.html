@@ -1,0 +1,113 @@
+<div class="form-page">
+  <div class="form-card">
+    <div class="form-header">
+      <span class="badge">REACTIVE FORM</span>
+      <h2>{{ isEditMode ? 'Modifier la Conférence' : 'Ajouter une Nouvelle Conférence' }}</h2>
+      <p class="subtitle">
+        {{ isEditMode ? 'Mettez à jour les détails de la conférence.' : 'Remplissez les informations ci-dessous pour créer une conférence.' }}
+      </p>
+    </div>
+
+    <form [formGroup]="conferenceForm" (ngSubmit)="onSubmit()" class="form-body">
+      <!-- Champ Titre -->
+      <div class="form-group">
+        <label for="title">Titre de la conférence *</label>
+        <input 
+          id="title"
+          type="text" 
+          formControlName="title" 
+          placeholder="Ex: Angular 21 & Reactive Forms"
+          [class.input-error]="title?.touched && title?.invalid"
+        />
+        @if (title?.touched && title?.invalid) {
+          <div class="error-msg">
+            @if (title?.errors?.['required']) { <span>Le titre est obligatoire.</span> }
+            @if (title?.errors?.['minlength']) { <span>Le titre doit comporter au moins 3 caractères.</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Champ Date -->
+      <div class="form-group">
+        <label for="date">Date de l'événement *</label>
+        <input 
+          id="date"
+          type="date" 
+          formControlName="date"
+          [class.input-error]="date?.touched && date?.invalid"
+        />
+        @if (date?.touched && date?.invalid) {
+          <div class="error-msg">
+            @if (date?.errors?.['required']) { <span>La date est obligatoire.</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Champ Lieu -->
+      <div class="form-group">
+        <label for="place">Lieu / Ville *</label>
+        <input 
+          id="place"
+          type="text" 
+          formControlName="place" 
+          placeholder="Ex: Tunis, Sousse, Sfax..."
+          [class.input-error]="place?.touched && place?.invalid"
+        />
+        @if (place?.touched && place?.invalid) {
+          <div class="error-msg">
+            @if (place?.errors?.['required']) { <span>Le lieu est obligatoire.</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Champ Conférencier -->
+      <div class="form-group">
+        <label for="speaker">Conférencier / Speaker *</label>
+        <input 
+          id="speaker"
+          type="text" 
+          formControlName="speaker" 
+          placeholder="Ex: Dr. Karim Bouzid"
+          [class.input-error]="speaker?.touched && speaker?.invalid"
+        />
+        @if (speaker?.touched && speaker?.invalid) {
+          <div class="error-msg">
+            @if (speaker?.errors?.['required']) { <span>Le conférencier est obligatoire.</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Champ Description -->
+      <div class="form-group">
+        <label for="description">Description détaillée *</label>
+        <textarea 
+          id="description"
+          rows="3"
+          formControlName="description" 
+          placeholder="Description de la conférence..."
+          [class.input-error]="description?.touched && description?.invalid"
+        ></textarea>
+        @if (description?.touched && description?.invalid) {
+          <div class="error-msg">
+            @if (description?.errors?.['required']) { <span>La description est obligatoire.</span> }
+            @if (description?.errors?.['minlength']) { <span>La description doit comporter au moins 10 caractères.</span> }
+          </div>
+        }
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="onCancel()">Annuler</button>
+        <button type="submit" class="btn-submit" [disabled]="conferenceForm.invalid">
+          {{ isEditMode ? 'Enregistrer les modifications' : 'Ajouter la conférence' }}
+        </button>
+      </div>
+
+      <!-- Aperçu de l'état du Reactive Form (Pédagogique pour le Prosit) -->
+      <div class="form-debug">
+        <strong>État du Reactive Form (TypeScript) :</strong>
+        <p>Statut : <span [class.text-valid]="conferenceForm.valid" [class.text-invalid]="conferenceForm.invalid">{{ conferenceForm.status }}</span> | Modifié (dirty) : {{ conferenceForm.dirty }} | Touché : {{ conferenceForm.touched }}</p>
+      </div>
+    </form>
+  </div>
+</div>

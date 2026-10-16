@@ -1,0 +1,13 @@
+welcome {{className}}
+<h1>interpolation {{name}}</h1>
+<img [src]="angularLogo" width="100">
+<button (click)="onEventBinding()">Eventbinding</button>
+<input [(ngModel)]="inputName" /> {{inputName}}
+<h2>signal : {{counter()}}</h2>
+<button (click)="increment()">increment</button> <button (click)="incSimple()">inc simple</button>
+<h2>{{counter()}}</h2>
+@if (className !== '4ssa5') { <p>equal</p> } @else { <p>{{className}} n'est pas egal a 4ssa5</p> }
+<h2>students (simple)</h2>
+@for (s of students; track s) { <p>{{s}}</p> } @empty { <p>no students</p> }
+<h2>students (objet)</h2>
+@for (s of studentsObj; track s.name) { <p>{{s.name}} - {{s.age}}</p> }
