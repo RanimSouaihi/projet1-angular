@@ -10,13 +10,13 @@
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 640px;
+  max-width: 650px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
 }
 
 .form-header {
-  background: linear-gradient(135deg, #5c6bc0, #7986cb);
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
   color: #ffffff;
   padding: 1.75rem 2rem 1.5rem;
 }
@@ -39,9 +39,38 @@
 }
 
 .form-header .subtitle {
-  margin: 0;
+  margin: 0 0 1rem;
   font-size: 0.88rem;
-  opacity: 0.9;
+  opacity: 0.95;
+}
+
+/* Barre de progression avec Signals */
+.progress-wrapper {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 0.75rem 1rem;
+  border-radius: 10px;
+  margin-top: 0.5rem;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.progress-track {
+  background: rgba(255, 255, 255, 0.3);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  background: #10b981;
+  height: 100%;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 4px;
 }
 
 .form-body {
@@ -49,6 +78,27 @@
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.char-counter {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #94a3b8;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.counter-good {
+  color: #059669;
+  background: #d1fae5;
 }
 
 .form-row {
@@ -89,8 +139,8 @@
 .form-group input:focus,
 .form-group select:focus,
 .form-group textarea:focus {
-  border-color: #5c6bc0;
-  box-shadow: 0 0 0 3px rgba(92, 107, 192, 0.2);
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
   background: #ffffff;
 }
 
@@ -137,7 +187,7 @@
 }
 
 .btn-submit {
-  background: #5c6bc0;
+  background: #4f46e5;
   color: #ffffff;
   border: none;
   padding: 0.65rem 1.5rem;
@@ -145,11 +195,12 @@
   font-size: 0.92rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, opacity 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .btn-submit:hover:not(:disabled) {
-  background: #3f51b5;
+  background: #4338ca;
+  transform: translateY(-1px);
 }
 
 .btn-submit:disabled {
@@ -159,7 +210,7 @@
 }
 
 .form-debug {
-  background: #f1f5f9;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 0.85rem 1rem;

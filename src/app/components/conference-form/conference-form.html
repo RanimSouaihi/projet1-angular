@@ -1,23 +1,39 @@
 <div class="form-page">
   <div class="form-card">
     <div class="form-header">
-      <span class="badge">PROSIT 2 : REACTIVE FORM VALIDÉ</span>
+      <span class="badge">PROSIT 3 : REACTIVE FORMS & SIGNALS</span>
       <h2>{{ isEditMode ? 'Modifier la Conférence' : 'Ajouter une Nouvelle Conférence' }}</h2>
       <p class="subtitle">
-        Formulaire réactif avec validation stricte des contraintes logiques.
+        Performance optimisée grâce aux <strong>Signals Angular 21</strong> (<code>toSignal</code> & <code>computed</code>).
       </p>
+
+      <!-- Barre de progression réactive dérivée via Signal computed() -->
+      <div class="progress-wrapper">
+        <div class="progress-label">
+          <span>Progression du formulaire :</span>
+          <strong>{{ formProgress() }}%</strong>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" [style.width.%]="formProgress()"></div>
+        </div>
+      </div>
     </div>
 
     <form [formGroup]="conferenceForm" (ngSubmit)="onSubmit()" class="form-body">
       
-      <!-- 1. Champ Titre -->
+      <!-- 1. Champ Titre avec compteur de caractères en temps réel via Signal -->
       <div class="form-group">
-        <label for="title">Titre de la conférence *</label>
+        <div class="label-row">
+          <label for="title">Titre de la conférence *</label>
+          <span class="char-counter" [class.counter-good]="titleChars() >= 3 && titleChars() <= 50">
+            📊 Signal : {{ titleChars() }} / 50 car.
+          </span>
+        </div>
         <input 
           id="title"
           type="text" 
           formControlName="title" 
-          placeholder="Ex: Angular 21 & Reactive Forms"
+          placeholder="Ex: Angular 21 & Signals"
           [class.input-error]="title?.touched && title?.invalid"
         />
         @if (title?.touched && title?.invalid) {
@@ -30,7 +46,7 @@
         }
       </div>
 
-      <!-- 2. Champ Catégorie (Select) -->
+      <!-- 2. Champ Catégorie -->
       <div class="form-group">
         <label for="category">Catégorie *</label>
         <select 
@@ -50,7 +66,7 @@
       </div>
 
       <div class="form-row">
-        <!-- 3. Champ Date (avec contrainte logique future) -->
+        <!-- 3. Champ Date -->
         <div class="form-group half-width">
           <label for="date">Date de l'événement *</label>
           <input 
@@ -126,43 +142,53 @@
         </div>
       </div>
 
-      <!-- 7. Champ Description -->
+      <!-- 7. Champ Description avec compteur de caractères en temps réel via Signal -->
       <div class="form-group">
-        <label for="description">Description détaillée *</label>
+        <div class="label-row">
+          <label for="description">Description détaillée *</label>
+          <span class="char-counter" [class.counter-good]="descriptionChars() >= 10 && descriptionChars() <= 300">
+            📊 Signal : {{ descriptionChars() }} / 300 car. (min 10)
+          </span>
+        </div>
         <textarea 
           id="description"
           rows="3"
           formControlName="description" 
-          placeholder="Décrivez les objectifs et thèmes abordés lors de la conférence..."
+          placeholder="Décrivez les objectifs et thèmes abordés..."
           [class.input-error]="description?.touched && description?.invalid"
         ></textarea>
         @if (description?.touched && description?.invalid) {
           <div class="error-msg">
             @if (description?.errors?.['required']) { <span>⚠️ La description est obligatoire.</span> }
-            @if (description?.errors?.['minlength']) { <span>⚠️ La description doit comporter au moins 10 caractères.</span> }
-            @if (description?.errors?.['maxlength']) { <span>⚠️ La description ne doit pas dépasser 300 caractères.</span> }
+            @if (description?.errors?.['minlength']) { <span>⚠️ Minimum 10 caractères requis.</span> }
+            @if (description?.errors?.['maxlength']) { <span>⚠️ Maximum 300 caractères autorisés.</span> }
           </div>
         }
       </div>
 
-      <!-- Boutons d'action -->
+      <!-- Actions : Bouton Enregistrer activé automatiquement par le Signal canSave() -->
       <div class="form-actions">
         <button type="button" class="btn-cancel" (click)="onCancel()">Annuler</button>
         <button type="button" class="btn-reset" (click)="onReset()">Réinitialiser</button>
-        <button type="submit" class="btn-submit" [disabled]="conferenceForm.invalid">
-          {{ isEditMode ? 'Enregistrer les modifications' : 'Ajouter la conférence' }}
+        
+        <!-- Activation automatique du bouton « Enregistrer » pilotée par Signal -->
+        <button type="submit" class="btn-submit" [disabled]="!canSave()">
+          {{ isEditMode ? 'Enregistrer les modifications' : 'Enregistrer la conférence' }}
         </button>
       </div>
 
-      <!-- Panneau pédagogique d'état des contrôles pour le Prosit -->
+      <!-- Panneau temps réel de l'état des Signals -->
       <div class="form-debug">
-        <div class="debug-title">🔍 Contrôle d'état du Reactive Form (TypeScript) :</div>
+        <div class="debug-title">⚡ État des Signals en temps réel (Angular 21) :</div>
         <div class="debug-badges">
-          <span class="status-badge" [class.badge-valid]="conferenceForm.valid" [class.badge-invalid]="conferenceForm.invalid">
-            Statut : {{ conferenceForm.status }}
+          <span class="status-badge" [class.badge-valid]="isFormValid()" [class.badge-invalid]="!isFormValid()">
+            isFormValid() : {{ isFormValid() ? '✅ OUI (VALID)' : '❌ NON (INVALID)' }}
           </span>
-          <span class="status-badge">Modifié (dirty) : {{ conferenceForm.dirty }}</span>
-          <span class="status-badge">Touché (touched) : {{ conferenceForm.touched }}</span>
+          <span class="status-badge" [class.badge-valid]="canSave()" [class.badge-invalid]="!canSave()">
+            canSave() : {{ canSave() ? '🟢 Bouton Activé' : '🔴 Bouton Désactivé' }}
+          </span>
+          <span class="status-badge">titleChars() : {{ titleChars() }}</span>
+          <span class="status-badge">descriptionChars() : {{ descriptionChars() }}</span>
         </div>
       </div>
     </form>

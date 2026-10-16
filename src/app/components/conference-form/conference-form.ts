@@ -1,4 +1,5 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, computed } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule, FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConferenceService } from '../../services/conference.service';
@@ -16,7 +17,7 @@ export class ConferenceFormComponent implements OnInit {
   private router = inject(Router);
   private conferenceService = inject(ConferenceService);
 
-  // Catégories disponibles pour les conférences
+  // Catégories disponibles
   categories: string[] = [
     'Web',
     'Backend',
@@ -26,70 +27,93 @@ export class ConferenceFormComponent implements OnInit {
     'Mobile'
   ];
 
+  // 1. Définition du Reactive Form dans le contexte d'injection
+  conferenceForm: FormGroup = this.fb.group({
+    title: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+      validTitleValidator()
+    ]),
+    category: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required, futureDateValidator()]),
+    place: new FormControl('', [Validators.required, Validators.minLength(2)]),
+    maxParticipants: new FormControl(50, [
+      Validators.required,
+      Validators.min(10),
+      Validators.max(500)
+    ]),
+    speaker: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(300)
+    ])
+  });
+
   // =========================================================================
-  // PROSIT 2 : Construction du formulaire à l'aide de FormGroup et FormControl
+  // PROSIT 3 : REACTIVE FORMS & SIGNALS (Solution alternative ultra-performante)
+  // Utilisation de toSignal() pour convertir les flux RxJS en Signals Angular 21
   // =========================================================================
-  conferenceForm!: FormGroup;
+
+  // A. Ponts vers les signaux pour les contrôles spécifiques
+  titleSignal = toSignal(this.conferenceForm.get('title')!.valueChanges, { 
+    initialValue: this.conferenceForm.get('title')?.value ?? '' 
+  });
+
+  descriptionSignal = toSignal(this.conferenceForm.get('description')!.valueChanges, { 
+    initialValue: this.conferenceForm.get('description')?.value ?? '' 
+  });
+
+  // B. Signal d'état global du formulaire
+  formStatusSignal = toSignal(this.conferenceForm.statusChanges, { 
+    initialValue: this.conferenceForm.status 
+  });
+
+  // C. Signal des valeurs globales du formulaire
+  formValuesSignal = toSignal(this.conferenceForm.valueChanges, { 
+    initialValue: this.conferenceForm.value 
+  });
+
+  // =========================================================================
+  // CALCULS DÉRIVÉS RÉACTIFS (computed)
+  // =========================================================================
+
+  // 1. Nombre de caractères saisis en temps réel (pour Titre et Description)
+  titleChars = computed(() => this.titleSignal()?.length ?? 0);
+  descriptionChars = computed(() => this.descriptionSignal()?.length ?? 0);
+
+  // 2. État de validité du formulaire sous forme de Signal booléen
+  isFormValid = computed(() => this.formStatusSignal() === 'VALID');
+
+  // 3. Activation automatique du bouton « Enregistrer » via Signal
+  canSave = computed(() => this.isFormValid());
+
+  // 4. Progression dynamique du formulaire (%)
+  formProgress = computed(() => {
+    // Déclencheur réactif via le signal des valeurs
+    this.formValuesSignal();
+    const fields = ['title', 'category', 'date', 'place', 'maxParticipants', 'speaker', 'description'];
+    let validCount = 0;
+    for (const f of fields) {
+      const c = this.conferenceForm.get(f);
+      if (c && c.valid && c.value !== '' && c.value !== null) {
+        validCount++;
+      }
+    }
+    return Math.round((validCount / fields.length) * 100);
+  });
+
   isEditMode = false;
   conferenceId?: number;
 
   ngOnInit(): void {
-    // Construction explicite avec FormBuilder et définition des contraintes logiques
-    this.conferenceForm = this.fb.group({
-      // 1. Titre : obligatoire, min 3 car., max 50 car., titre valide
-      title: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
-        validTitleValidator()
-      ]),
-
-      // 2. Catégorie : obligatoire
-      category: new FormControl('', [
-        Validators.required
-      ]),
-
-      // 3. Date : obligatoire + contrainte logique de date future
-      date: new FormControl('', [
-        Validators.required,
-        futureDateValidator()
-      ]),
-
-      // 4. Lieu : obligatoire, min 2 caractères
-      place: new FormControl('', [
-        Validators.required,
-        Validators.minLength(2)
-      ]),
-
-      // 5. Nombre maximal de participants : obligatoire, min 10, max 500
-      maxParticipants: new FormControl(50, [
-        Validators.required,
-        Validators.min(10),
-        Validators.max(500)
-      ]),
-
-      // 6. Conférencier / Speaker : obligatoire
-      speaker: new FormControl('', [
-        Validators.required,
-        Validators.minLength(3)
-      ]),
-
-      // 7. Description : obligatoire, min 10 caractères
-      description: new FormControl('', [
-        Validators.required,
-        Validators.minLength(10),
-        Validators.maxLength(300)
-      ])
-    });
-
-    // Détection du mode (Ajout ou Modification)
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.isEditMode = true;
       this.conferenceId = Number(idParam);
       const conf = this.conferenceService.getConferenceById(this.conferenceId);
       if (conf) {
-        // Récupération et injection des données dans le formulaire
         this.conferenceForm.patchValue({
           title: conf.title,
           category: conf.category,
@@ -103,9 +127,7 @@ export class ConferenceFormComponent implements OnInit {
     }
   }
 
-  // =========================================================================
-  // Getters pour faciliter l'accès aux contrôles dans le template HTML
-  // =========================================================================
+  // Getters pour les contrôles du template
   get title() { return this.conferenceForm.get('title'); }
   get category() { return this.conferenceForm.get('category'); }
   get date() { return this.conferenceForm.get('date'); }
@@ -114,17 +136,13 @@ export class ConferenceFormComponent implements OnInit {
   get speaker() { return this.conferenceForm.get('speaker'); }
   get description() { return this.conferenceForm.get('description'); }
 
-  // Soumission et récupération des données en TypeScript
   onSubmit(): void {
-    if (this.conferenceForm.invalid) {
-      // Marquer tous les contrôles comme touchés pour afficher les messages d'erreur
+    if (!this.canSave()) {
       this.conferenceForm.markAllAsTouched();
       return;
     }
 
-    // Récupération des valeurs du formulaire typées depuis TypeScript
     const formValues = this.conferenceForm.value;
-    console.log('Données récupérées depuis le Reactive Form :', formValues);
 
     if (this.isEditMode && this.conferenceId) {
       const existing = this.conferenceService.getConferenceById(this.conferenceId);
@@ -140,7 +158,6 @@ export class ConferenceFormComponent implements OnInit {
       });
     }
 
-    // Redirection vers la liste des conférences
     this.router.navigate(['/list']);
   }
 
