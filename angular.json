@@ -3,11 +3,11 @@
   "version": 1,
   "cli": {
     "packageManager": "npm",
-    "analytics": false
+    "analytics": "95094a11-2da6-43e4-9235-dd9ae1e2e953"
   },
   "newProjectRoot": "projects",
   "projects": {
-    "project1": {
+    "ssa5": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -39,8 +39,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "10kB",
-                  "maximumError": "20kB"
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
                 }
               ],
               "outputHashing": "all"
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "project1:build:production"
+              "buildTarget": "ssa5:build:production"
             },
             "development": {
-              "buildTarget": "project1:build:development"
+              "buildTarget": "ssa5:build:development"
             }
           },
           "defaultConfiguration": "development"
